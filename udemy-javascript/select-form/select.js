@@ -1,3 +1,40 @@
+export default class Select {
+	constructor(element) {
+		this.element = element;
+		this.options = getFormatOptions(element.querySelectorAll('option'));
+		this.customElement = document.createElement('div');
+		this.labelElement = document.createElement('span');
+		this.optionCustomElement = document.createElement('ul');
+		setupCustomElement(this);
+		element.style.display = 'none';
+		element.after(this.customElement);
+	}
+
+	get selectedOption() {
+		return this.options.find((option) => option.selected);
+	}
+
+	get SelectedOptionIndex() {
+		return this.options.indexOf(this.selectedOption);
+	}
+
+	selectValue(value) {
+		const newSelectedOption = this.options.find((option) => option.value === value);
+		const prevSelectedOption = this.selectedOption;
+		prevSelectedOption.selected = false;
+		prevSelectedOption.element.selected = false;
+
+		newSelectedOption.selected = true;
+		newSelectedOption.element.selected = true;
+
+		this.labelElement.innerText = newSelectedOption.label;
+		this.optionCustomElement.querySelector(`[data-value="${prevSelectedOption.value}"]`).classList.remove('selected');
+		const newCustomeElement = this.optionCustomElement.querySelector(`[data-value="${newSelectedOption.value}"]`);
+		newCustomeElement.classList.add('selected');
+		newCustomeElement.scrollIntoView({ block: 'nearest' });
+	}
+}
+
 const setupCustomElement = (select) => {
 	select.customElement.classList.add('custom-select-container');
 	select.customElement.tabIndex = 0;
@@ -79,40 +116,3 @@ const getFormatOptions = (optionElements) =>
 		selected: optionElement.selected,
 		element: optionElement,
 	}));
-
-export default class Select {
-	constructor(element) {
-		this.element = element;
-		this.options = getFormatOptions(element.querySelectorAll('option'));
-		this.customElement = document.createElement('div');
-		this.labelElement = document.createElement('span');
-		this.optionCustomElement = document.createElement('ul');
-		setupCustomElement(this);
-		element.style.display = 'none';
-		element.after(this.customElement);
-	}
-
-	get selectedOption() {
-		return this.options.find((option) => option.selected);
-	}
-
-	get SelectedOptionIndex() {
-		return this.options.indexOf(this.selectedOption);
-	}
-
-	selectValue(value) {
-		const newSelectedOption = this.options.find((option) => option.value === value);
-		const prevSelectedOption = this.selectedOption;
-		prevSelectedOption.selected = false;
-		prevSelectedOption.element.selected = false;
-
-		newSelectedOption.selected = true;
-		newSelectedOption.element.selected = true;
-
-		this.labelElement.innerText = newSelectedOption.label;
-		this.optionCustomElement.querySelector(`[data-value="${prevSelectedOption.value}"]`).classList.remove('selected');
-		const newCustomeElement = this.optionCustomElement.querySelector(`[data-value="${newSelectedOption.value}"]`);
-		newCustomeElement.classList.add('selected');
-		newCustomeElement.scrollIntoView({ block: 'nearest' });
-	}
-}
