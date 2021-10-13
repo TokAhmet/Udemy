@@ -6,3 +6,5 @@ selectElement.forEach((item) => {
 	const select = new Select(item);
 	select;
 });
+
+// test
