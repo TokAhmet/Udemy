@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 5000;
 
-app.set('views', './udemy-javascript/views');
+app.set('views', './views');
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -13,7 +13,7 @@ app.get('/about', (req, res) => {
 	res.render('about');
 });
 
-app.use(express.static('./udemy-javascript/views'));
+app.use(express.static('./views'));
 app.use('/css', express.static(`${__dirname}views`));
 app.use('/js', express.static(`${__dirname}views`));
 
